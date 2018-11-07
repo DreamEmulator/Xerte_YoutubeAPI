@@ -1,0 +1,32 @@
+/*Op de start pagina van Xerte  - CSS:*/
+
+.iframe-container{
+    position: relative
+}
+
+.iframe-container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    max-width: 640px;
+    height: 60px;
+    pointer-events: all;
+    background-color: #000;
+    z-index: 1;
+}
+
+.iframe-cover{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: all;
+    z-index: 1;
+    left: 0;
+    background-color: #142840;
+    background-image: url('https://xoteur.12change.eu/USER-FILES/948-465640-Nottingham//media/play_knop.png');
+    background-repeat: no-repeat;
+    background-size:50%;
+    background-position: center;
+}
