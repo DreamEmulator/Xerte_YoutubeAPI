@@ -59,7 +59,7 @@ function LoadPlayer(settings) {
     $('.iframe-cover').click(function () {
         player.playVideo();
         setTimeout(function () {
-            $('.iframe-cover').remove();
+            $('.iframe-cover').css({'display':'none'});
         }, 500);
     });
 
@@ -71,6 +71,7 @@ function AddYouTubeVideo(settings) {
         try {
             LoadPlayer(settings);
             console.log("Youtube Succesfully Loaded");
+            $('.iframe-cover').css({'display':'block'});
             this.break;
         } catch (err) {
             console.log("Youtube not loaded yet: Trying again...");
