@@ -1,6 +1,6 @@
 /////////////////////////// Op de specifieke Xerte pagina - SCRIPT: ///////////////////////////
 var settings = {
-    videoId : 'rAt1vxwQG9c',
+    videoId: 'rAt1vxwQG9c',
     startSeconds: 0,
     endSeconds: 0,
     mute: 0,
@@ -9,9 +9,6 @@ AddYouTubeVideo(settings);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 ///////////////////////////Op de start pagina van de Xerte Module - SCRIPT://///////////////////////
@@ -47,8 +44,8 @@ function LoadPlayer(settings) {
 
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
-        if (event.data === -1){
-            $('.iframe-cover').css({'opacity':1,'pointer-events':'all'});
+        if (event.data === -1) {
+            $('.iframe-cover').addClass('show');
         }
 
         if (event.data === 0) {
@@ -59,38 +56,45 @@ function LoadPlayer(settings) {
             });
         }
 
-        if (event.data === -1){
-            $('.iframe-cover').css({'opacity':0,'pointer-events':'none'});
-        }
-
         if (event.data === 2) {
-            $('.iframe-cover').css({'opacity':1,'pointer-events':'all'});
+            $('.iframe-cover').addClass('show');
         }
     }
 
     $('.iframe-cover').click(function () {
         player.playVideo();
-        setTimeout(function () {
-            $('.iframe-cover').css({'opacity':0,'pointer-events':'none'});
-        }, 500);
+        $('.iframe-cover').addClass('show');
     });
 
 
 }
 
+var tries = 0;
+
 function AddYouTubeVideo(settings) {
 
-        try {
-            LoadPlayer(settings);
-            console.log("Youtube Succesfully Loaded");
-            this.break;
-        } catch (err) {
+    try {
+        LoadPlayer(settings);
+        console.log("Youtube Succesfully Loaded");
+        this.break;
+    } catch (err) {
+
+        if (tries < 30) {
+
+            tries++;
             console.log("Youtube not loaded yet: Trying again...");
             LoadYoutubeAPI();
             setTimeout(function () {
                 AddYouTubeVideo(settings)
-            }, 100);
+            }, 250);
+
+            console.log("Trying " + (30 - tries) + " more times...");
+        } else {
+            alert("Helaas, YouTube video kon niet geladen worden...");
+            this.break;
         }
+
+    }
 
 }
 
