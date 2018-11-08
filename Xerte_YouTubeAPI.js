@@ -45,7 +45,7 @@ function LoadPlayer(settings) {
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
         if (event.data === -1) {
-            $('.iframe-cover').addClass('show');
+            $('.iframe-cover').removeClass('show');
         }
 
         if (event.data === 0) {
@@ -54,16 +54,21 @@ function LoadPlayer(settings) {
                 startSeconds: settings.startSeconds,
                 endSeconds: settings.endSeconds
             });
+            $('.iframe-cover').removeClass('show');
+            player.pauseVideo()
+        }
+
+        if (event.data === 1) {
+            $('.iframe-cover').addClass('show');
         }
 
         if (event.data === 2) {
-            $('.iframe-cover').addClass('show');
+            $('.iframe-cover').removeClass('show');
         }
     }
 
     $('.iframe-cover').click(function () {
         player.playVideo();
-        $('.iframe-cover').addClass('show');
     });
 
 
