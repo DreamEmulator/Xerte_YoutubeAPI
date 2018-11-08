@@ -47,6 +47,10 @@ function LoadPlayer(settings) {
 
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
+        if (event.data === -1){
+            $('.iframe-cover').css({'opacity':1,'pointer-events':'all'});
+        }
+
         if (event.data === 0) {
             player.loadVideoById({
                 videoId: settings.videoId,
@@ -54,12 +58,20 @@ function LoadPlayer(settings) {
                 endSeconds: settings.endSeconds
             });
         }
+
+        if (event.data === -1){
+            $('.iframe-cover').css({'opacity':0,'pointer-events':'none'});
+        }
+
+        if (event.data === 2) {
+            $('.iframe-cover').css({'opacity':1,'pointer-events':'all'});
+        }
     }
 
     $('.iframe-cover').click(function () {
         player.playVideo();
         setTimeout(function () {
-            $('.iframe-cover').css({'display':'none'});
+            $('.iframe-cover').css({'opacity':0,'pointer-events':'none'});
         }, 500);
     });
 
@@ -71,7 +83,6 @@ function AddYouTubeVideo(settings) {
         try {
             LoadPlayer(settings);
             console.log("Youtube Succesfully Loaded");
-            $('.iframe-cover').css({'display':'block'});
             this.break;
         } catch (err) {
             console.log("Youtube not loaded yet: Trying again...");

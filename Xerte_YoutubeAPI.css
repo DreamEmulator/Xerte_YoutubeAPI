@@ -1,19 +1,9 @@
 /*Op de start pagina van Xerte  - CSS:*/
 
 .iframe-container{
-    position: relative
-}
-
-.iframe-container:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 100%;
-    max-width: 640px;
-    height: 60px;
-    pointer-events: all;
-    background-color: #000;
-    z-index: 1;
+    position: relative;
+    display: inline-block;
+    margin-top: -30px;
 }
 
 .iframe-cover{
@@ -24,9 +14,34 @@
     pointer-events: all;
     z-index: 1;
     left: 0;
+    transition: opacity 0.5s;
     background-color: #142840;
-    background-image: url('https://xoteur.12change.eu/USER-FILES/948-465640-Nottingham//media/play_knop.png');
+    background-image: url('https://xoteur.12change.eu/USER-FILES/1072-354009-ErasmusMC/media/play_button.png');
     background-repeat: no-repeat;
-    background-size:50%;
+    background-size:10%;
     background-position: center;
+}
+
+.iframe-container:before, .iframe-cover:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    /*max-width: 640px;*/
+    height: 60px;
+    pointer-events: all;
+    background-color:#99D6EE;
+    z-index: 1;
+}
+
+.iframe-container:after, .iframe-cover:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /*max-width: 640px;*/
+    height: 45px;
+    pointer-events: all;
+    background-color: #99D6EE;
+    z-index: 1;
 }
