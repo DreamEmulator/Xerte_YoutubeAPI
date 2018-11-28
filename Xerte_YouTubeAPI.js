@@ -45,7 +45,7 @@ function LoadPlayer(settings) {
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
         if (event.data === -1) {
-            $('.iframe-cover').addClass('show');
+            $('.erasmus-youtube-cover').addClass('show');
         }
 
         if (event.data === 0) {
@@ -54,20 +54,20 @@ function LoadPlayer(settings) {
                 startSeconds: settings.startSeconds,
                 endSeconds: settings.endSeconds
             });
-            $('.iframe-cover').removeClass('show');
+            $('.erasmus-youtube-cover').removeClass('show');
             player.pauseVideo()
         }
 
         if (event.data === 1) {
-            $('.iframe-cover').addClass('show');
+            $('.erasmus-youtube-cover').addClass('show');
         }
 
         if (event.data === 2) {
-            $('.iframe-cover').removeClass('show');
+            $('.erasmus-youtube-cover').removeClass('show');
         }
     }
 
-    $('.iframe-cover').click(function () {
+    $('.erasmus-youtube-cover').click(function () {
         player.playVideo();
     });
 

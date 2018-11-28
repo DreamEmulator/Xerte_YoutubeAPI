@@ -1,12 +1,12 @@
 /*Op de start pagina van Xerte  - CSS:*/
 
-.iframe-container {
+.erasmus-youtube-container {
     position: relative;
     display: inline-block;
     margin-top: -30px;
 }
 
-.iframe-cover {
+.erasmus-youtube-cover {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -22,14 +22,14 @@
     background-position: center;
 }
 
-.iframe-cover.show {
+.erasmus-youtube-cover.show {
     opacity: 0;
     transition: opacity 0.5s 1s;
     pointer-events: none;
     background-image: url('https://xoteur.12change.eu/USER-FILES/1072-354009-ErasmusMC/media/loading.gif');
 }
 
-.iframe-container:before, .iframe-cover:before {
+.erasmus-youtube-container:before, .erasmus-youtube-cover:before {
     content: "";
     position: absolute;
     top: 0;
@@ -41,7 +41,7 @@
     z-index: 1;
 }
 
-.iframe-container:after, .iframe-cover:after {
+.erasmus-youtube-container:after, .erasmus-youtube-cover:after {
     content: "";
     position: absolute;
     bottom: 0;
