@@ -45,7 +45,7 @@ function LoadPlayer(settings) {
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
         if (event.data === -1) {
-            $('.iframe-cover').removeClass('show');
+            $('.iframe-cover').addClass('show');
         }
 
         if (event.data === 0) {
