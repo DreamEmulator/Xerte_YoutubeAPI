@@ -47,7 +47,7 @@ function LoadPlayer(youtube_settings) {
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
         if (event.data === -1) {
-            $('.erasmus-youtube-cover').addClass('show');
+            $('.erasmus-youtube-container').addClass('play');
         }
 
         if (event.data === 0) {
@@ -56,18 +56,18 @@ function LoadPlayer(youtube_settings) {
                 startSeconds: youtube_settings.startSeconds,
                 endSeconds: youtube_settings.endSeconds
             });
-            $('.erasmus-youtube-cover').removeClass('show');
+            $('.erasmus-youtube-cover').removeClass('play');
             player.pauseVideo();
             clearInterval(youtube_interval);
         }
 
         if (event.data === 1) {
-            $('.erasmus-youtube-cover').addClass('show');
+            $('.erasmus-youtube-cover').addClass('play');
             showRemainingTime();
         }
 
         if (event.data === 2) {
-            $('.erasmus-youtube-cover').removeClass('show');
+            $('.erasmus-youtube-cover').removeClass('play');
             clearInterval(youtube_interval);
         }
     }
@@ -86,7 +86,6 @@ function LoadPlayer(youtube_settings) {
         var count_down = document.getElementById('erasmus-youtube-countdown');
         youtube_interval = setInterval(function () {
             time_elapsed++;
-            console.log(time_remaining - time_elapsed);
             count_down.innerText = (time_remaining - time_elapsed);
         },1000);
     }
