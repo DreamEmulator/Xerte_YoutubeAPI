@@ -1,11 +1,11 @@
 /////////////////////////// Op de specifieke Xerte pagina - SCRIPT: ///////////////////////////
-var settings = {
+var youtube_settings = {
     videoId: 'rAt1vxwQG9c',
     startSeconds: 0,
     endSeconds: 0,
     mute: 0,
 }
-AddYouTubeVideo(settings);
+AddYouTubeVideo(youtube_settings);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,23 +19,25 @@ function LoadYoutubeAPI() {
     $.getScript("https://www.youtube.com/iframe_api");
 }
 
-function LoadPlayer(settings) {
+function LoadPlayer(youtube_settings) {
 
     var player;
+    var youtube_interval;
 
     player = new YT.Player('player', {
         height: '390',
         width: '640',
-        videoId: settings.videoId,
+        videoId: youtube_settings.videoId,
         playerVars: {
-            start: settings.startSeconds,
-            end: settings.endSeconds,
-            mute: settings.mute,
+            start: youtube_settings.startSeconds,
+            end: youtube_settings.endSeconds,
+            mute: youtube_settings.mute,
             showInfo: 0,
             controls: 0,
             rel: 0,
             iv_load_policy: 3,
-            playsinline: 1
+            playsinline: 1,
+            fs:0,
         },
         events: {
             onStateChange: onPlayerStateChange
@@ -50,20 +52,23 @@ function LoadPlayer(settings) {
 
         if (event.data === 0) {
             player.loadVideoById({
-                videoId: settings.videoId,
-                startSeconds: settings.startSeconds,
-                endSeconds: settings.endSeconds
+                videoId: youtube_settings.videoId,
+                startSeconds: youtube_settings.startSeconds,
+                endSeconds: youtube_settings.endSeconds
             });
             $('.erasmus-youtube-cover').removeClass('show');
-            player.pauseVideo()
+            player.pauseVideo();
+            clearInterval(youtube_interval);
         }
 
         if (event.data === 1) {
             $('.erasmus-youtube-cover').addClass('show');
+            showRemainingTime();
         }
 
         if (event.data === 2) {
             $('.erasmus-youtube-cover').removeClass('show');
+            clearInterval(youtube_interval);
         }
     }
 
@@ -72,14 +77,28 @@ function LoadPlayer(settings) {
     });
 
 
+    function showRemainingTime(){
+
+        var start_time = youtube_settings.startSeconds ? youtube_settings.startSeconds : player.getCurrentPosition();
+        var end_time = youtube_settings.endSeconds ? youtube_settings.endSeconds : player.getDuration();
+        var time_remaining = end_time - start_time;
+        var time_elapsed = 0;
+        var count_down = document.getElementById('erasmus-youtube-countdown');
+        youtube_interval = setInterval(function () {
+            time_elapsed++;
+            console.log(time_remaining - time_elapsed);
+            count_down.innerText = (time_remaining - time_elapsed);
+        },1000);
+    }
+
 }
 
-var tries = 0;
+function AddYouTubeVideo(youtube_settings) {
 
-function AddYouTubeVideo(settings) {
+    var tries = 0;
 
     try {
-        LoadPlayer(settings);
+        LoadPlayer(youtube_settings);
         console.log("Youtube Succesfully Loaded");
         this.break;
     } catch (err) {
@@ -90,7 +109,7 @@ function AddYouTubeVideo(settings) {
             console.log("Youtube not loaded yet: Trying again...");
             LoadYoutubeAPI();
             setTimeout(function () {
-                AddYouTubeVideo(settings)
+                AddYouTubeVideo(youtube_settings)
             }, 250);
 
             console.log("Trying " + (30 - tries) + " more times...");
@@ -102,6 +121,7 @@ function AddYouTubeVideo(settings) {
     }
 
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
