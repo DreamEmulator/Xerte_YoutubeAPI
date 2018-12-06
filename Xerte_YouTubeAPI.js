@@ -14,7 +14,6 @@ AddYouTubeVideo(youtube_settings);
 $.getScript('https://coo.erasmusmc.nl/xerte/js/xerte_erasmus.js');
 
 var youtube_load_api_attempts = 0;
-
 function LoadYoutubeAPI() {
     console.log('Loading Youtube API...');
     $.getScript("https://www.youtube.com/iframe_api");
@@ -22,7 +21,11 @@ function LoadYoutubeAPI() {
 
 function Load_Player(youtube_settings) {
 
+    var erasmus_youtube_times_played = 0;
+    var erasmus_youtube_loop_ref = [-1, 3];
+    var erasmus_youtube_loop = [];
     var erasmus_youtube_interval;
+
     var erasmus_youtube_player = new YT.Player('erasmus-youtube-player', {
         height: '390',
         width: '640',
@@ -43,18 +46,26 @@ function Load_Player(youtube_settings) {
         }
     });
 
-    var loop_ref = [-1,3];
-    var loop = [];
-
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
 
-        loop.push(event.data);
-        console.log(loop);
+        console.log(event.data);
+        erasmus_youtube_loop.push(event.data);
 
-        if (JSON.stringify(loop).indexOf(JSON.stringify(loop_ref)) !== -1 ){
+        if (JSON.stringify(erasmus_youtube_loop).indexOf(JSON.stringify(erasmus_youtube_loop_ref)) !== -1 && erasmus_youtube_times_played !== 0) {
             erasmus_youtube_player.pauseVideo();
-            loop = [];
+            erasmus_youtube_loop = [];
+        }
+
+        // -1 – unstarted
+        // 0 – ended
+        // 1 – playing
+        // 2 – paused
+        // 3 – buffering
+        // 5 – video cued
+
+        if (event.data === -1) {
+            $('#erasmus-youtube-container').removeClass('play');
         }
 
         if (event.data === 0) {
@@ -64,7 +75,8 @@ function Load_Player(youtube_settings) {
                 startSeconds: youtube_settings.startSeconds,
                 endSeconds: youtube_settings.endSeconds
             });
-            loop = [];
+            erasmus_youtube_loop = [];
+            erasmus_youtube_times_played++;
             $('#erasmus-youtube-container').removeClass('play');
         }
 
@@ -85,7 +97,7 @@ function Load_Player(youtube_settings) {
     });
 
     function showRemainingTime() {
-
+        clearInterval(erasmus_youtube_interval);
         var start_time = youtube_settings.startSeconds ? youtube_settings.startSeconds : erasmus_youtube_player.getCurrentPosition();
         var end_time = youtube_settings.endSeconds ? youtube_settings.endSeconds : erasmus_youtube_player.getDuration();
         var time_remaining = end_time - start_time;
@@ -101,39 +113,28 @@ function Load_Player(youtube_settings) {
 
 function AddYouTubeVideo(youtube_settings) {
 
-    var erasmus_youtube_player = document.getElementById('erasmus-youtube-player')
-
-    if (erasmus_youtube_player.tagName == 'IFRAME') {
-        var new_youtube_player = document.createElement('div');
-        new_youtube_player.setAttribute('id','erasmus-youtube-player');
-        document.getElementById('erasmus-youtube-container').append(new_youtube_player);
-        erasmus_youtube_player.remove();
-    }
-
-    try {
-        Load_Player(youtube_settings);
-        console.log("Youtube Succesfully Loaded");
-        youtube_api_loaded_succesfully = true;
-        this.break;
-    } catch (err) {
-
-        if (youtube_load_api_attempts < 30) {
-
-            youtube_load_api_attempts++;
-            console.log("Youtube not loaded yet: Trying again...");
-            LoadYoutubeAPI();
-            setTimeout(function () {
-                AddYouTubeVideo(youtube_settings)
-            }, 250);
-
-            console.log("Trying " + (30 - youtube_load_api_attempts) + " more times...");
-        } else {
-            alert("Helaas, YouTube video kon niet geladen worden...");
+        try {
+            Load_Player(youtube_settings);
+            console.log("Youtube Succesfully Loaded");
+            $('#erasmus-youtube-container').removeClass('play');
             this.break;
+        } catch (err) {
+
+            if (youtube_load_api_attempts < 30) {
+
+                youtube_load_api_attempts++;
+                console.log("Loading YouTube API...");
+                LoadYoutubeAPI();
+                setTimeout(function () {
+                    AddYouTubeVideo(youtube_settings)
+                }, 250);
+
+            } else {
+                alert("Helaas, YouTube video kon niet geladen worden...");
+                this.break;
+            }
+
         }
-
-    }
-
 }
 
 
