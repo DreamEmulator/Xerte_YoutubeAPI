@@ -14,6 +14,7 @@ AddYouTubeVideo(youtube_settings);
 $.getScript('https://coo.erasmusmc.nl/xerte/js/xerte_erasmus.js');
 
 var youtube_load_api_attempts = 0;
+var erasmus_youtube_interval;
 function LoadYoutubeAPI() {
     console.log('Loading Youtube API...');
     $.getScript("https://www.youtube.com/iframe_api");
@@ -24,7 +25,6 @@ function Load_Player(youtube_settings) {
     var erasmus_youtube_times_played = 0;
     var erasmus_youtube_loop_ref = [-1, 3];
     var erasmus_youtube_loop = [];
-    var erasmus_youtube_interval;
 
     var erasmus_youtube_player = new YT.Player('erasmus-youtube-player', {
         height: '390',
@@ -49,7 +49,6 @@ function Load_Player(youtube_settings) {
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
 
-        console.log(event.data);
         erasmus_youtube_loop.push(event.data);
 
         if (JSON.stringify(erasmus_youtube_loop).indexOf(JSON.stringify(erasmus_youtube_loop_ref)) !== -1 && erasmus_youtube_times_played !== 0) {
