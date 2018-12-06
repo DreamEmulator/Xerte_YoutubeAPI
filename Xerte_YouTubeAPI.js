@@ -10,12 +10,10 @@ AddYouTubeVideo(youtube_settings);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////Op de start pagina van de Xerte Module - SCRIPT://///////////////////////
 $.getScript('https://coo.erasmusmc.nl/xerte/js/xerte_erasmus.js');
 
 var youtube_load_api_attempts = 0;
-var youtube_api_loaded_succesfully = false;
 
 function LoadYoutubeAPI() {
     console.log('Loading Youtube API...');
@@ -45,22 +43,36 @@ function Load_Player(youtube_settings) {
         }
     });
 
+    var loop_ref = [-1,3];
+    var loop = [];
+
 //Voor het opnieuw laden van de video als deze afgelopen is
     function onPlayerStateChange(event) {
-        if (event.data === -1) {
-            $('#erasmus-youtube-container').addClass('play');
+
+        loop.push(event.data);
+        console.log(loop);
+
+        if (JSON.stringify(loop).indexOf(JSON.stringify(loop_ref)) !== -1 ){
+            erasmus_youtube_player.pauseVideo();
+            loop = [];
         }
 
+        // -1 – unstarted
+        // 0 – ended
+        // 1 – playing
+        // 2 – paused
+        // 3 – buffering
+        // 5 – video cued
+
         if (event.data === 0) {
+            clearInterval(erasmus_youtube_interval);
             erasmus_youtube_player.loadVideoById({
                 videoId: youtube_settings.videoId,
                 startSeconds: youtube_settings.startSeconds,
                 endSeconds: youtube_settings.endSeconds
             });
+            loop = [];
             $('#erasmus-youtube-container').removeClass('play');
-            erasmus_youtube_player.pauseVideo();
-            console.log("EYEYS");
-            clearInterval(erasmus_youtube_interval);
         }
 
         if (event.data === 1) {
@@ -72,6 +84,7 @@ function Load_Player(youtube_settings) {
             $('#erasmus-youtube-container').removeClass('play');
             clearInterval(erasmus_youtube_interval);
         }
+
     }
 
     $('.erasmus-youtube-cover').click(function () {
