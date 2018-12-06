@@ -57,13 +57,6 @@ function Load_Player(youtube_settings) {
             loop = [];
         }
 
-        // -1 – unstarted
-        // 0 – ended
-        // 1 – playing
-        // 2 – paused
-        // 3 – buffering
-        // 5 – video cued
-
         if (event.data === 0) {
             clearInterval(erasmus_youtube_interval);
             erasmus_youtube_player.loadVideoById({
