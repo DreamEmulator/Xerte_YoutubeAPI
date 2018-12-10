@@ -2,21 +2,21 @@
 var youtube_settings = {
 
     //Aanpassen naar wens
-    videoId : 'FLd00Bx4tOk',
+    videoId: 'FLd00Bx4tOk',
     startSeconds: 10,
     endSeconds: 15,
     mute: 1,
 
     //Beter zo laten
-    load: function(){
+    load: function () {
         try {
             $.xerte.youtube(youtube_settings);
             this.break;
-        } catch{
+        } catch {
             console.log('Xerte JS not loaded yet...');
-            setTimeout(function(){
+            setTimeout(function () {
                 youtube_settings.load();
-            },250);
+            }, 250);
         }
     }
 }
@@ -31,6 +31,7 @@ $.getScript('https://coo.erasmusmc.nl/xerte/js/xerte_erasmus.js');
 
 var youtube_load_api_attempts = 0;
 var erasmus_youtube_interval;
+
 function LoadYoutubeAPI() {
     console.log('Loading Youtube API...');
     $.getScript("https://www.youtube.com/iframe_api");
@@ -40,17 +41,15 @@ function Load_Player(youtube_settings) {
 
     function pretty_time(secs) {
         var sec_num = parseInt(secs, 10)
-        var hours   = Math.floor(sec_num / 3600) % 24
+        var hours = Math.floor(sec_num / 3600) % 24
         var minutes = Math.floor(sec_num / 60) % 60
         var seconds = sec_num % 60
-        if (minutes > 0){
-            return [hours,minutes,seconds]
+
+        return [minutes, seconds]
             .map(v => v < 10 ? "0" + v : v)
-            .filter((v,i) => v !== "00" || i > 0)
+            .filter((v, i) => v !== "00" || i > 0)
             .join(":")
-        } else {
-            return seconds;
-        }
+
     };
 
     var erasmus_youtube_times_played = 0;
@@ -144,28 +143,28 @@ function Load_Player(youtube_settings) {
 
 function AddYouTubeVideo(youtube_settings) {
 
-        try {
-            Load_Player(youtube_settings);
-            console.log("Youtube Succesfully Loaded");
-            $('#erasmus-youtube-container').removeClass('play');
+    try {
+        Load_Player(youtube_settings);
+        console.log("Youtube Succesfully Loaded");
+        $('#erasmus-youtube-container').removeClass('play');
+        this.break;
+    } catch (err) {
+
+        if (youtube_load_api_attempts < 30) {
+
+            youtube_load_api_attempts++;
+            console.log("Loading YouTube API...");
+            LoadYoutubeAPI();
+            setTimeout(function () {
+                AddYouTubeVideo(youtube_settings)
+            }, 250);
+
+        } else {
+            alert("Helaas, YouTube video kon niet geladen worden...");
             this.break;
-        } catch (err) {
-
-            if (youtube_load_api_attempts < 30) {
-
-                youtube_load_api_attempts++;
-                console.log("Loading YouTube API...");
-                LoadYoutubeAPI();
-                setTimeout(function () {
-                    AddYouTubeVideo(youtube_settings)
-                }, 250);
-
-            } else {
-                alert("Helaas, YouTube video kon niet geladen worden...");
-                this.break;
-            }
-
         }
+
+    }
 }
 
 

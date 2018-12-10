@@ -152,14 +152,12 @@
                         var hours = Math.floor(sec_num / 3600) % 24
                         var minutes = Math.floor(sec_num / 60) % 60
                         var seconds = sec_num % 60
-                        if (minutes > 0) {
-                            return [hours, minutes, seconds]
-                                .map(v => v < 10 ? "0" + v : v)
-                                .filter((v, i) => v !== "00" || i > 0)
-                                .join(":")
-                        } else {
-                            return seconds;
-                        }
+
+                        return [minutes, seconds]
+                            .map(v => v < 10 ? "0" + v : v)
+                            .filter((v, i) => v !== "00" || i > 0)
+                            .join(":")
+
                     };
 
                     var erasmus_youtube_times_played = 0;
