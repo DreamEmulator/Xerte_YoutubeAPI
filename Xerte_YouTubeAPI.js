@@ -1,9 +1,10 @@
 /////////////////////////// Op de specifieke Xerte pagina - SCRIPT: ///////////////////////////
 var youtube_settings = {
+
     //Aanpassen naar wens
     videoId : 'FLd00Bx4tOk',
     startSeconds: 10,
-    endSeconds: 115,
+    endSeconds: 15,
     mute: 1,
 
     //Beter zo laten
@@ -20,7 +21,7 @@ var youtube_settings = {
     }
 }
 
-
+//Deze niet vergeten
 youtube_settings.load();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
