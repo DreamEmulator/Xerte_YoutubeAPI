@@ -1,12 +1,27 @@
 /////////////////////////// Op de specifieke Xerte pagina - SCRIPT: ///////////////////////////
 var youtube_settings = {
-    videoId: 'rAt1vxwQG9c',
-    startSeconds: 0,
-    endSeconds: 0,
-    mute: 0,
-}
-AddYouTubeVideo(youtube_settings);
+    //Aanpassen naar wens
+    videoId : 'FLd00Bx4tOk',
+    startSeconds: 10,
+    endSeconds: 115,
+    mute: 1,
 
+    //Beter zo laten
+    load: function(){
+        try {
+            $.xerte.youtube(youtube_settings);
+            this.break;
+        } catch{
+            console.log('Xerte JS not loaded yet...');
+            setTimeout(function(){
+                youtube_settings.load();
+            },250);
+        }
+    }
+}
+
+
+youtube_settings.load();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,6 +122,7 @@ function Load_Player(youtube_settings) {
     }
 
     $('.erasmus-youtube-cover').click(function () {
+        $('#erasmus-youtube-container').addClass('play');
         erasmus_youtube_player.playVideo();
     });
 
