@@ -255,6 +255,7 @@
                         Load_Player(youtube_settings);
                         console.log("Youtube Succesfully Loaded");
                         $('#erasmus-youtube-container').removeClass('play');
+
                         this.break;
                     } catch (err) {
 
