@@ -39,17 +39,11 @@ function LoadYoutubeAPI() {
 
 function Load_Player(youtube_settings) {
 
+    var date = new Date(null);
+
     function pretty_time(secs) {
-        var sec_num = parseInt(secs, 10)
-        var hours = Math.floor(sec_num / 3600) % 24
-        var minutes = Math.floor(sec_num / 60) % 60
-        var seconds = sec_num % 60
-
-        return [minutes, seconds]
-            .map(v => v < 10 ? "0" + v : v)
-            .filter((v, i) => v !== "00" || i > 0)
-            .join(":")
-
+        date.setSeconds(secs); // specify value for SECONDS here
+        return result = date.toISOString().substr(14, 5);
     };
 
     var erasmus_youtube_times_played = 0;
