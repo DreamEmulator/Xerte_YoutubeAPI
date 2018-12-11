@@ -148,8 +148,9 @@
                 function Load_Player(youtube_settings) {
 
                     function pretty_time(secs) {
+                        var date = new Date(null);
                         date.setSeconds(secs); // specify value for SECONDS here
-                        return result = date.toISOString().substr(14, 5);
+                        return date.toISOString().substr(14, 5);
                     };
 
                     var erasmus_youtube_times_played = 0;
